@@ -61,6 +61,27 @@ class Robot{
             }
         }
     }
+    public boolean contains(int[] array, int number){
+        for (int s : array) {
+            if (number == s) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void update_move_to_be_made(int[][] move_to_be_made, int direction){
+        switch(direction){
+            case 1:
+                if(move_to_be_made )//if all situation => what is the new number
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
     public boolean Validate_direction(int direction, char[][] map){
         //1 for up, 2 for right, 3 for down, 4 for left, 5 for 1 + 2, 6 for 1 + 3, 7 for 1 + 4, 8 for 2 + 3, 9 for 2 + 4,
         //10 for 3 + 4, 11 for 1 + 2 + 3, 12 for  1 + 2 + 4, 13 for 1 + 3 + 4, 14 for 2 + 3 + 4, 15 for the end no route left
@@ -70,36 +91,30 @@ class Robot{
         //1. we have not made that move yet
         //2. there is no obstacle there
         //3. we have not been here yet since if we have been here, we can just call a traceback if there is no step to explore anymore
-        switch (direction):
-        case 1:
-            int go_up_direction = [1, 5, 6, 7, 11, 12, 13];
-            if(!go_up_direction.includes(move_to_be_made[current_row][current_col]) && map[current_row+1][current_col] != '.' && move_to_be_made[current_row+1][current_col] == 0){
-                return true;
-            }
-            else return false;
-            break;
-        case 2:
-            int go_down_direction = [3, 6, 8, 10, 11, 13, 14];
-            if(!go_down_direction.includes(move_to_be_made[current_row][current_col]) && map[current_row][current_col+1] != '.' && move_to_be_made[current_row][current_col+1] == 0){
-                return true;
-            }
-            else return false;
-            break;
-        case 3:
-            int go_left_direction = [4, 7, 9, 10, 12, 13, 14];
-            if(!go_left_direction.includes(move_to_be_made[current_row][current_col]) && map[current_row-1][current_col] != '.' && move_to_be_made[current_row-1][current_col] == 0){
-                return true;
-            }
-            else return false;
-            break;
-        case 4:
-            int go_right_direction = [2, 5, 8, 9, 11, 12, 14];
-            if(!go_right_direction.includes(move_to_be_made[current_row][current_col]) && map[current_row][current_col-1] != '.' && move_to_be_made[current_row][current_col-1] == 0){
-                return true;
-            }
-            else return false;
-            break;
-        return 0;
+        switch (direction) {
+            case 1:
+                int[] go_up_direction =  new int[]{1, 5, 6, 7, 11, 12, 13};
+                if (!contains(go_up_direction, move_to_be_made[current_row][current_col]) && map[current_row + 1][current_col] != '.' && move_to_be_made[current_row + 1][current_col] == 0) {
+                    return true;
+                } else return false;
+                
+            case 2:
+                int[] go_down_direction = new int[]{3, 6, 8, 10, 11, 13, 14};
+                if (!contains(go_down_direction, move_to_be_made[current_row][current_col]) && map[current_row][current_col + 1] != '.' && move_to_be_made[current_row][current_col + 1] == 0) {
+                    return true;
+                } else return false;
+            case 3:
+                int[] go_left_direction = new int[]{4, 7, 9, 10, 12, 13, 14};
+                if (!contains(go_left_direction, move_to_be_made[current_row][current_col]) && map[current_row - 1][current_col] != '.' && move_to_be_made[current_row - 1][current_col] == 0) {
+                    return true;
+                } else return false;
+            case 4:
+                int[] go_right_direction = new int[]{2, 5, 8, 9, 11, 12, 14};
+                if (!contains(go_right_direction, move_to_be_made[current_row][current_col]) && map[current_row][current_col - 1] != '.' && move_to_be_made[current_row][current_col - 1] == 0) {
+                    return true;
+                } else return false;
+        }
+        return false;
     }
     public void Navigate(int target_row, int target_col, char[][] map){
         //list contain all the number that if the array have this number => it used to go up
@@ -108,19 +123,34 @@ class Robot{
             //go up
             //from origin position
             if(move_to_be_made[current_row][current_col] == 0){
-                move_to_be_made[current_row][current_col] == 1; //we save it so that we know we went up next time we checked it here
+                move_to_be_made[current_row][current_col] = 1; //we save it so that we know we went up next time we checked it here
                 this.current_row += 1;
                 move_to_be_made[current_row][current_col] = 3;
                 origin[current_row][current_col] = 3;
             }
             if(move_to_be_made[current_row][current_col] == 15){ //have go all road that is available => traceback
                 if(origin[current_row][current_col] == 1){//the last step we go from the top to under it 1 row => trace back to
+                    //above it 1 row
+                    current_row += 1;
+                }
+                if(origin[current_row][current_col] == 2){//the last step we go from the right to left 1 col => trace back to
+                    //the right it 1 row
+                    current_col += 1;
+                }
+                if(origin[current_row][current_col] == 3){//the last step we go from the under up 1 row => trace back to
                     //under it 1 row
                     current_row -= 1;
+                }
+                if(origin[current_row][current_col] == 4){//the last step we go from the right to left 1 col => trace back to
+                    //the right 1 col
+                    current_col -= 1;
                 }
             }
             //not from origin position so check if can we go up or not
             else if(Validate_direction(1, map)){ //did not go up yet
+                
+                move_to_be_made[current_row][current_col] = 1; //we save it so that we know we went up next time we checked it here
+
                 this.current_row += 1;
                 move_to_be_made[current_row][current_col] = 3;
                 origin[current_row][current_col] = 3;
