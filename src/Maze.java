@@ -8,12 +8,14 @@ public class Maze {
     int target_row;
     int target_col;
     public Maze(){
-        String[] map = new String[5];
-        map[0] = ".....";
-        map[1] = ".  .X";
-        map[2] = ".  . ";
-        map[3] = ".    ";
-        map[4] = ".....";
+        String[] map = new String[7];
+        map[0] = "........";
+        map[1] = "..... .X";
+        map[2] = "    . . ";
+        map[3] = ".   . . ";
+        map[4] = ". ...   ";
+        map[5] = ".       ";
+        map[6] = "........";
         this.height = map.length;
         this.length = map[0].toCharArray().length;
         char[][] maze = new char[this.height][this.length];
@@ -38,7 +40,7 @@ public class Maze {
     public void printAll(){
         System.out.println(this.height + " " + this.length + " " + this.step + " /n " + this.map[0][0]);
     }
-
+//MADE BY NGUYENTHEMINH master 12/9/2022
     public static void main(String[] args) {
         Maze map = new Maze();
         Robot robot = new Robot(map.height, map.length, 3, 1 );
@@ -46,13 +48,24 @@ public class Maze {
         int last_position = -1;
         while(map.map[robot.current_row][robot.current_col] != 'X'){
             robot.Navigate(map.target_row, map.target_col, map.map);
-            last_position = robot.current_col + robot.current_row;
+            System.out.println(robot.move_to_be_made[robot.current_row][robot.current_col] + " " + robot.origin[robot.current_row][robot.current_col] + " " + robot.current_row + " " + robot.current_col);
+            System.out.println(" ");
             if(robot.current_col + robot.current_row == last_position){
                 System.out.println("There is no way out");
+                for(int height = 0; height < map.height; height++){
+                    System.out.println("ROW " + height);
+                    for(int length = 0; length < map.length; length++){
+                        System.out.println(robot.move_to_be_made[height][length]);
+
+//                        robot.origin[height][length] = 0;
+                    }
+                }
+                break;
+
             }
             else{
                 last_position = robot.current_col + robot.current_row;
-                System.out.println("Step + 1");
+//                System.out.println("Step + 1");
                 map.step+=1;
             }
 
@@ -81,12 +94,6 @@ class Robot{
 //        System.out.println(move_to_be_made);
 //        System.out.println(origin);
 //
-        for(int height = 0; height < maze_height; height++){
-            System.out.println("row " + height);
-            for(int length = 0; length < maze_length; length++){
-                System.out.println(move_to_be_made[current_row][current_col]);
-            }
-        }
     }
     public boolean contains(int[] array, int number){
         for (int s : array) {
@@ -97,14 +104,16 @@ class Robot{
         return false;
     }
     public void update_move_to_be_made(int direction){
-        if(move_to_be_made[current_row][current_col] == 0){
-            move_to_be_made[current_row][current_col] = direction;
-            return ;
-        }
+
         switch(direction){
             case 1:
+                if(move_to_be_made[current_row][current_col] == 0){
+                    move_to_be_made[current_row][current_col] = direction;
+                break;
+                }
                 if(move_to_be_made[current_row][current_col] < 11){
                     //if all situation => what is the new number
+                    System.out.println(move_to_be_made[current_row][current_col] + " TO 16 and why");
                     move_to_be_made[current_row][current_col] += 3;//2 go up to 5, 3 go up to 6, 4 go up to 7 , 8 go up to 11,
                     //9 go up to 12, 10 go up to 13
                 }
@@ -113,10 +122,14 @@ class Robot{
                 }
                 break;
             case 2:
+                if(move_to_be_made[current_row][current_col] == 0){
+                    move_to_be_made[current_row][current_col] = direction;
+                break;
+                }
                 if(move_to_be_made[current_row][current_col] == 1){
                     move_to_be_made[current_row][current_col] = 5;
                 }
-                else if(move_to_be_made[current_row][current_col] > 2 && move_to_be_made[current_row][current_row] < 8){
+                else if(move_to_be_made[current_row][current_col] > 2 && move_to_be_made[current_row][current_col] < 8){
                     move_to_be_made[current_row][current_col] += 5; //3 up to 8, 4 up to 9, 6 to 11, 7 to 12,
                 }
                 else if(move_to_be_made[current_row][current_col] == 10){
@@ -127,11 +140,15 @@ class Robot{
                 }
                 break;
             case 3:
+                if(move_to_be_made[current_row][current_col] == 0){
+                    move_to_be_made[current_row][current_col] = direction;
+                break;
+                }
                 if(move_to_be_made[current_row][current_col] < 3){
                     move_to_be_made[current_row][current_col] = move_to_be_made[current_row][current_col]*2 + 4;
                     //1 = 6, 2 = 8, 4
                 }
-                else if(move_to_be_made[current_row][current_col] > 3 && move_to_be_made[current_row][current_row] < 6){
+                else if(move_to_be_made[current_row][current_col] > 3 && move_to_be_made[current_row][current_col] < 6){
                     move_to_be_made[current_row][current_col] += 6; //3 up to 8, 4 up to 9, 6 to 11, 7 to 12,
                 }
                 else if(move_to_be_made[current_row][current_col] == 7){
@@ -145,11 +162,15 @@ class Robot{
                 }
                 break;
             case 4:
+                if(move_to_be_made[current_row][current_col] == 0){
+                    move_to_be_made[current_row][current_col] = direction;
+                break;
+                }
                 if(move_to_be_made[current_row][current_col] < 3){
                     move_to_be_made[current_row][current_col] = move_to_be_made[current_row][current_col]*2 + 5;
                     //1 = 7, 2 = 9
                 }
-                else if(move_to_be_made[current_row][current_col] >= 3 && move_to_be_made[current_row][current_row] < 7){
+                else if(move_to_be_made[current_row][current_col] >= 3 && move_to_be_made[current_row][current_col] < 7){
                     move_to_be_made[current_row][current_col] += 7; //3 up to 10, 5 up to 12, 6 to 13,
                 }
                 else if(move_to_be_made[current_row][current_col] == 8){
@@ -170,32 +191,91 @@ class Robot{
         //1. we have not made that move yet
         //2. there is no obstacle there
         //3. we have not been here yet since if we have been here, we can just call a traceback if there is no step to explore anymore
-        switch (direction) {
-            case 1:
+            if(direction == 1){
+                if(current_row+1 != map.length){
                 int[] go_up_direction =  new int[]{1, 5, 6, 7, 11, 12, 13};
                 if (!contains(go_up_direction, move_to_be_made[current_row][current_col]) && map[current_row + 1][current_col] != '.' && move_to_be_made[current_row + 1][current_col] == 0) {
                     return true;
-                } else return false;
-            case 2:
-                int[] go_right_direction = new int[]{2, 5, 8, 9, 11, 12, 14};
-                if (!contains(go_right_direction, move_to_be_made[current_row][current_col]) && map[current_row][current_col + 1] != '.' && move_to_be_made[current_row][current_col + 1] == 0) {
-                    return true;
-                } else return false;
-            case 3:
+                } else {update_move_to_be_made(1); return false;}}
+            else{
+                update_move_to_be_made(1); return false;
+                }
+            }
+            if(direction == 2) {
+                if (current_col + 1 != map[0].length) {
+                    int[] go_right_direction = new int[]{2, 5, 8, 9, 11, 12, 14};
+                    if (!contains(go_right_direction, move_to_be_made[current_row][current_col]) && map[current_row][current_col + 1] != '.' && move_to_be_made[current_row][current_col + 1] == 0) {
+                        return true;
+                    } else {
+                        update_move_to_be_made(2);
+                        return false;
+                    }
+                }
+                else{
+                    update_move_to_be_made(2);
+                    return false;
+                }
+            }
+                if (direction == 3) {
+                    if(current_row!= 0) {
 //                System.out.println(map[current_row][current_col+1]!= '.');
 //                System.out.println(move_to_be_made[current_row][current_col]);
 //                System.out.println(move_to_be_made[current_row][current_col + 1]);
-                int[] go_down_direction = new int[]{3, 6, 8, 10, 11, 13, 14};
-                if (!contains(go_down_direction, move_to_be_made[current_row][current_col]) && map[current_row-1][current_col] != '.' && move_to_be_made[current_row-1][current_col] == 0) {
+                    int[] go_down_direction = new int[]{3, 6, 8, 10, 11, 13, 14};
+                    if (!contains(go_down_direction, move_to_be_made[current_row][current_col]) && map[current_row - 1][current_col] != '.' && move_to_be_made[current_row - 1][current_col] == 0) {
+                        return true;
+                    } else {
+                        update_move_to_be_made(3);
+                        return false;
+                    }
+                }
+                else{
+                    update_move_to_be_made(3); return false;
+                }
+            }
+            if(direction == 4) {
+                if(current_col!= 0){
+                    int[] go_left_direction = new int[]{4, 7, 9, 10, 12, 13, 14};
+                if (!contains(go_left_direction, move_to_be_made[current_row][current_col]) && map[current_row][current_col - 1] != '.' && move_to_be_made[current_row][current_col - 1] == 0) {
                     return true;
-                } else return false;
-            case 4:
-                int[] go_left_direction = new int[]{4, 7, 9, 10, 12, 13, 14};
-                if (!contains(go_left_direction, move_to_be_made[current_row][current_col]) && map[current_row][current_col-1] != '.' && move_to_be_made[current_row][current_col-1] == 0) {
-                    return true;
-                } else return false;
+                } else {
+                    update_move_to_be_made(4);
+                    return false;
+                }
+            }
+            else{
+                update_move_to_be_made(4); return false;
+            }
         }
         return false;
+    }
+    public void traceback(){
+//        System.out.println(origin[current_row][current_col]);
+//        System.out.println("RAN");
+//        System.out.println(origin[current_row][current_col]);
+        if (origin[current_row][current_col] == 1) {//the last step we go from the top to under it 1 row => trace back to
+            //above it 1 row
+            System.out.println("Traceback down ") ;
+
+            current_row += 1;
+        }
+        if (origin[current_row][current_col] == 2) {//the last step we go from the left to right 1 col => trace back to
+            //the right it 1 row
+            System.out.println("Traceback right ") ;
+
+            current_col += 1;
+        }
+        if (origin[current_row][current_col] == 3) {//the last step we go from the under up 1 row => trace back to
+            //under it 1 row
+            System.out.println("Traceback up ") ;
+
+            current_row -= 1;
+        }
+        if (origin[current_row][current_col] == 4) {//the last step we go from the right to left 1 col => trace back to
+            //the left 1 col
+            System.out.println("Traceback left ") ;
+            current_col -= 1;
+        }
     }
     public void Navigate(int target_row, int target_col, char[][] map) {
         //list contain all the number that if the array have this number => it used to go up
@@ -208,28 +288,14 @@ class Robot{
 //            origin[current_row][current_col] = 3;
 //        }
         //go all route already
-        if (move_to_be_made[current_row][current_col] == 15) { //have go all road that is available => traceback
-            if (origin[current_row][current_col] == 1) {//the last step we go from the top to under it 1 row => trace back to
-                //above it 1 row
-                current_row += 1;
-            }
-            if (origin[current_row][current_col] == 2) {//the last step we go from the left to right 1 col => trace back to
-                //the right it 1 row
-                current_col += 1;
-            }
-            if (origin[current_row][current_col] == 3) {//the last step we go from the under up 1 row => trace back to
-                //under it 1 row
-                current_row -= 1;
-            }
-            if (origin[current_row][current_col] == 4) {//the last step we go from the right to left 1 col => trace back to
-                //the left 1 col
-                current_col -= 1;
-            }
+        if (move_to_be_made[current_row][current_col] == 15 ) { //have go all road that is available => traceback
+            traceback();
+
         } else if (target_row > current_row) {
             //go up
             //not from origin position so check if can we go up or not
             if (Validate_direction(1, map)) { //did not go up yet
-//                System.out.println("1");
+                System.out.println("1");
                 update_move_to_be_made(1); //we save it so that we know we went up next time we checked it here
                 this.current_row += 1;
                 update_move_to_be_made(3);
@@ -238,25 +304,53 @@ class Robot{
                 if (target_col > current_col) { //the target is in the right of the robot
                     //since move to be made =/= 0 so no need to check
                     if (Validate_direction(2, map)) {
-//                        System.out.println("2");
+                        System.out.println("2");
                         update_move_to_be_made(2); //we save it so that we know we went up next time we checked it here
                         this.current_col += 1;
                         update_move_to_be_made(4);
                         origin[current_row][current_col] = 4;
                     } else { //cannot go right
-//                        System.out.println("4");
+                        System.out.println("4");
                         if (Validate_direction(4, map)) { //can we go left?
                             update_move_to_be_made(4);
                             this.current_col -= 1;
                             update_move_to_be_made(2);
                             origin[current_row][current_col] = 2;
                         }
-                        if (Validate_direction(3, map)) { //can we go down?
+                        else if (Validate_direction(3, map)) { //can we go up?
+                            System.out.println("3");
+                            update_move_to_be_made(3);
+                            this.current_row -= 1;
+                            update_move_to_be_made(1);
+                            origin[current_row][current_col] = 1;
+                        }
+                        else{
+                            traceback();
+                        }
+                    }
+                }
+                else {
+                    if (Validate_direction(4, map)) {
+//                        System.out.println("2");
+                        update_move_to_be_made(4); //we save it so that we know we went up next time we checked it here
+                        this.current_col += 1;
+                        update_move_to_be_made(2);
+                        origin[current_row][current_col] = 2;
+                    } else { //cannot go right
+//                        System.out.println("4");
+                        if (Validate_direction(2, map)) { //can we go left?
+                            update_move_to_be_made(2);
+                            this.current_col -= 1;
+                            update_move_to_be_made(4);
+                            origin[current_row][current_col] = 4;
+                        } else if (Validate_direction(3, map)) { //can we go down?
 //                            System.out.println("3");
                             update_move_to_be_made(3);
                             this.current_row -= 1;
                             update_move_to_be_made(1);
                             origin[current_row][current_col] = 1;
+                        } else {
+                            traceback();
                         }
                     }
                 }
@@ -265,7 +359,10 @@ class Robot{
             //go down
             //not from origin position so check if can we go down or not
             if (Validate_direction(3, map)) { //did not go up yet
+                System.out.println(move_to_be_made[current_row][current_col]);
                 update_move_to_be_made(3); //we save it so that we know we went up next time we checked it here
+                System.out.println(move_to_be_made[current_row][current_col]);
+
                 this.current_row -= 1;
                 update_move_to_be_made(1);
                 origin[current_row][current_col] = 1;
@@ -273,22 +370,36 @@ class Robot{
                 if (target_col > current_col) { //the target is in the right of the robot
                     //since move to be made =/= 0 so no need to check
                     if (Validate_direction(2, map)) {
+                        System.out.println(move_to_be_made[current_row][current_col]);
                         update_move_to_be_made(2); //we save it so that we know we went up next time we checked it here
+                        System.out.println(move_to_be_made[current_row][current_col]);
+
                         this.current_col += 1;
                         update_move_to_be_made(4);
                         origin[current_row][current_col] = 4;
                     } else {
                         if (Validate_direction(4, map)) {
+                            System.out.println(move_to_be_made[current_row][current_col]);
                             update_move_to_be_made(4);
+                            System.out.println(move_to_be_made[current_row][current_col]);
+
                             this.current_col -= 1;
-                            update_move_to_be_made(1);
-                            origin[current_row][current_col] = 1;
+                            update_move_to_be_made(2);
+                            origin[current_row][current_col] = 2;
                         }
-                        if (Validate_direction(1, map)) {
+                        else if (Validate_direction(1, map)) {
+                            System.out.println(move_to_be_made[current_row][current_col]);
                             update_move_to_be_made(1);
+                            System.out.println(move_to_be_made[current_row][current_col]);
+
                             this.current_row += 1;
                             update_move_to_be_made(3);
                             origin[current_row][current_col] = 3;
+                        }
+                        else{
+//                            System.out.println(move_to_be_made[current_row][current_col]);
+//                            System.out.println(origin[current_row][current_col]);
+                            traceback();
                         }
                     }
                 }
@@ -305,11 +416,14 @@ class Robot{
                             update_move_to_be_made(4);
                             origin[current_row][current_col] = 4;
                         }
-                        if (Validate_direction(1, map)) {
+                        else if (Validate_direction(1, map)) {
                             update_move_to_be_made(1);
                             this.current_row += 1;
                             update_move_to_be_made(3);
                             origin[current_row][current_col] = 3;
+                        }
+                        else{
+                            traceback();
                         }
                     }
                 }
@@ -329,10 +443,10 @@ class Robot{
                         System.out.print("4");
                         update_move_to_be_made(4);
                         this.current_col -= 1;
-                        update_move_to_be_made(1);
-                        origin[current_row][current_col] = 1;
+                        update_move_to_be_made(2);
+                        origin[current_row][current_col] = 2;
                     }
-                    if (Validate_direction(1, map)) {
+                    else if (Validate_direction(1, map)) {
                         System.out.print("1");
 
                         update_move_to_be_made(1);
@@ -340,13 +454,16 @@ class Robot{
                         update_move_to_be_made(3);
                         origin[current_row][current_col] = 3;
                     }
-                    if (Validate_direction(3, map)) {
+                    else if (Validate_direction(3, map)) {
                         System.out.print("3");
 
                         update_move_to_be_made(3);
                         this.current_row -= 1;
                         update_move_to_be_made(1);
                         origin[current_row][current_col] = 1;
+                    }
+                    else{
+                        traceback();
                     }
                 }
             }
@@ -366,7 +483,7 @@ class Robot{
                         update_move_to_be_made(4);
                         origin[current_row][current_col] = 4;
                     }
-                    if (Validate_direction(1, map)) {
+                    else if (Validate_direction(1, map)) {
                         System.out.print("1.2");
 
                         update_move_to_be_made(1);
@@ -374,12 +491,15 @@ class Robot{
                         update_move_to_be_made(3);
                         origin[current_row][current_col] = 3;
                     }
-                    if (Validate_direction(3, map)) {
+                    else if (Validate_direction(3, map)) {
                         System.out.print("3.2");
                         update_move_to_be_made(3);
                         this.current_row -= 1;
                         update_move_to_be_made(1);
                         origin[current_row][current_col] = 1;
+                    }
+                    else{
+                        traceback();
                     }
                 }
             }
