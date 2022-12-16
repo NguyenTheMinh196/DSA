@@ -14,7 +14,7 @@ public class Maze {
         map = new String[rows];
         map[0] = ".........";
         map[1] = ".....   .";
-        map[2] = "      . .";
+        map[2] = "    . . .";
         map[3] = ".   . . .";
         map[4] = ". ... . .";
         map[5] = ".   . .X.";
@@ -269,11 +269,14 @@ class Robot{
         return "0";
     }
     public void Navigate() {
+
         //list contain all the number that if the array have this number => it used to go up
         //from origin position
         Maze maze = new Maze();
         String result = "";
         while (!result.equals("win")) {
+            int current_col_past = current_col;
+            int current_row_past = current_row;
             if (move_to_be_made[current_row][current_col] == 15) { //have go all road that is available => traceback
                 result = traceback(maze);
             } else if (Validate_direction(1)) {
@@ -442,6 +445,10 @@ class Robot{
                 }
             } else {
                 result = traceback(maze);
+            }
+            if(current_col == current_col_past && current_row == current_row_past){
+                System.out.println("There is no way out!");
+                break;
             }
         }
     }
